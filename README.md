@@ -28,4 +28,12 @@ User stories implemented:
 4. Advanced: User can refresh tweets timeline by pulling down to refresh (i.e pull-to-refresh)
 
 Video Link: http://youtu.be/_GB4g5RQRk0
+Video Link2 : http://youtu.be/vtzBObY1SQE
+
+Project 2:
+- User can view their home timeline tweets.
+- User can view the recent mentions of their username.
+- User can scroll to bottom of either of these lists and new tweets will load ("infinite scroll")
+- User can see picture, tagline, # of followers, # of following, and tweets on their profile.
+- User can see picture, tagline, # of followers, # of following, and tweets of clicked user.
 
