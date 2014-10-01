@@ -3,14 +3,11 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.apps.basictwitter.TimeLineActivity"
+    tools:context="com.codepath.apps.basictwitter.ProfileActivity"
     tools:ignore="MergeRootFrame" >
 
-    <FrameLayout
-        android:id="@+id/flContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    
 
-    </FrameLayout>
+       
 
 </FrameLayout>

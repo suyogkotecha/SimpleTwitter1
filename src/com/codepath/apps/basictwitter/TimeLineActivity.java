@@ -1,116 +1,70 @@
 package com.codepath.apps.basictwitter;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.app.Activity;
-import android.app.Fragment;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.codepath.apps.basictwitter.models.Tweet;
-import com.loopj.android.http.JsonHttpResponseHandler;
+import com.codepath.apps.basictwitter.listeners.FragmentTabListener;
+import com.codepath.apps.fragments.HomeTimeLineFragment;
+import com.codepath.apps.fragments.MentionsTimeLineFragment;
+import com.codepath.apps.fragments.TweetsListFragment;
 
-public class TimeLineActivity extends Activity {
+public class TimeLineActivity extends FragmentActivity {
 
-	private SwipeRefreshLayout swipeContainer;
-	private TwitterClient client;
-	private ArrayList<Tweet> tweets;
-	private ArrayAdapter<Tweet> aTweets;
-	private ListView lvTweets;
-	private int since_id = 1;
+	
+
+
+	private TweetsListFragment fragmentTweetList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_time_line);
-		
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
-		
-		loadItems();
+		setupTabs();
+		//fragmentTweetList = (TweetsListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentTimeLine);
+		//loadItems();
 	}
+
+	private void setupTabs() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowTitleEnabled(true);
+
+        Tab tab1 = actionBar
+            .newTab()
+            .setText("Home")
+            .setIcon(R.drawable.ic_home)
+            .setTag("HomeTimelineFragment")
+            .setTabListener(
+                new FragmentTabListener<HomeTimeLineFragment>(R.id.flContainer, this, "first",
+                		HomeTimeLineFragment.class));
+
+        actionBar.addTab(tab1);
+        actionBar.selectTab(tab1);
+
+        Tab tab2 = actionBar
+            .newTab()
+            .setText("Second")
+            .setIcon(R.drawable.ic_mentions)
+            .setTag("MentionsTimelineFragment")
+            .setTabListener(
+                new FragmentTabListener<MentionsTimeLineFragment>(R.id.flContainer, this, "second",
+                		MentionsTimeLineFragment.class));
+
+        actionBar.addTab(tab2);
+    }
 
 	/**
 	 * Reset and Refresh the View
 	 */
-
-	public void refreshTimeLineView(){
-		tweets.removeAll(tweets);
-		since_id = 1;
-		populateTimeLine();
-	}
-
-	public void loadItems(){
-		swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-		swipeContainer.setOnRefreshListener(new OnRefreshListener() {
-			
-			@Override
-			public void onRefresh() {
-				// TODO Auto-generated method stub
-				refreshTimeLineView();
-			}
-		});
-
-		swipeContainer.setColorScheme(android.R.color.holo_blue_bright, 
-                android.R.color.holo_green_light, 
-                android.R.color.holo_orange_light, 
-                android.R.color.holo_red_light);
-		
-		
+/*
 	
-		lvTweets = (ListView) findViewById(R.id.lvTweets);
-		lvTweets.setOnScrollListener(new EndlessScrollListener() {
-			
-			@Override
-			public void onLoadMore(int page, int totalItemsCount) {
-				// TODO Auto-generated method stub
-				populateTimeLine();
-				
-			}
-		});
-		
-		
-		
-		tweets = new ArrayList<Tweet>();
-		aTweets = new TweetArrayAdapter(this, tweets);
-		client = TwitterApplication.getRestClient();
-		populateTimeLine();
-		lvTweets.setAdapter(aTweets);
-	}
-	public void populateTimeLine(){
-		client.getHomeTimeline(new JsonHttpResponseHandler() {
-			@Override
-			public void onFailure(Throwable e, String s) {
-				// TODO Auto-generated method stub
-				Log.d("debug",e.toString());
-				Log.d("debug",s);
-			}
-			@Override
-			public void onSuccess(JSONArray json) {
-				// TODO Auto-generated method stub
-				aTweets.addAll(Tweet.fromJsonArray(json));
-				aTweets.notifyDataSetChanged();
-				since_id+=25;
-				swipeContainer.setRefreshing(false);
-			}
-		}, since_id);
-	}
+*/
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -131,29 +85,19 @@ public class TimeLineActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_time_line,
-					container, false);
-			return rootView;
-		}
-	}
-
 	public void composeTweet(MenuItem mi){
 		Intent i = new Intent(TimeLineActivity.this, ComposeTweet.class);
 		//Toast.makeText(this, "Trying to go to next Intent", Toast.LENGTH_SHORT).show();
 		//startActivity(i);
 		startActivityForResult(i, 20);
 	}
+
+	public void onProfileView(MenuItem mi){
+		Intent i = new Intent(TimeLineActivity.this, ProfileActivity.class);
+		//startActivityForResult(i, 21);
+		startActivity(i);
+	}
+	/*
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -182,5 +126,5 @@ public class TimeLineActivity extends Activity {
 		} else if(resultCode == RESULT_OK ){
 			refreshTimeLineView();
 		}
-	}
+	}*/
 }

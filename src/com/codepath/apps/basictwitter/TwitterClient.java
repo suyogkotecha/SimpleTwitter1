@@ -1,10 +1,10 @@
 package com.codepath.apps.basictwitter;
 
 import org.scribe.builder.api.Api;
-import org.scribe.builder.api.FlickrApi;
 import org.scribe.builder.api.TwitterApi;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -48,6 +48,35 @@ public class TwitterClient extends OAuthBaseClient {
 		client.post(apiUrl, params, handler);
 	}
 
+	public void getMentionsTimeLine(
+			AsyncHttpResponseHandler handler, int since_id) {
+		// TODO Auto-generated method stub
+		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("since_id", String.valueOf(since_id));
+		client.get(apiUrl, params, handler);
+	}
+
+	public void getMyInfo(AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+		client.get(apiUrl, null, handler);
+	}
+	public void getUserTimeLine(AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		client.get(apiUrl, null, handler);
+	}
+	public void getUserTimeLine(AsyncHttpResponseHandler handler, String user_name){
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", user_name);
+		client.get(apiUrl, params, handler);
+	}
+	public void getUserInfo(AsyncHttpResponseHandler handler, String name){
+		String apiUrl = getApiUrl("users/show.json");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", name);
+		client.get(apiUrl, params, handler);
+	}
 	// CHANGE THIS
 	// DEFINE METHODS for different API endpoints here
 	/*public void getInterestingnessList(AsyncHttpResponseHandler handler) {

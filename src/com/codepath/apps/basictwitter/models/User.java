@@ -9,6 +9,34 @@ public class User {
 	private long uid;
 	private String screenName;
 	private String profileImageUrl;
+	public String getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(String followers) {
+		this.followers = followers;
+	}
+
+	public String getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(String following) {
+		this.following = following;
+	}
+
+	public String getTagLine() {
+		return tagLine;
+	}
+
+	public void setTagLine(String tagLine) {
+		this.tagLine = tagLine;
+	}
+
+	private String followers;
+	private String following;
+	private String tagLine;
+	
 
 	public String getName() {
 		return name;
@@ -34,6 +62,9 @@ public class User {
 			u.uid = jsonObject.getLong("id");
 			u.screenName = "@"+jsonObject.getString("screen_name");
 			u.profileImageUrl = jsonObject.getString("profile_image_url");
+			u.followers = jsonObject.getString("followers_count");
+			u.following = jsonObject.getString("friends_count");
+			u.tagLine = jsonObject.getString("description");
 		}catch(JSONException e){
 			e.printStackTrace();
 			return null;
